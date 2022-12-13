@@ -15,9 +15,12 @@ public partial class MainPage : ContentPage
     {
 
         inputDevice.EventReceived += OnEventReceived;
+        outputDevice.EventSent += OnEventSent;
+
         devicesConnector = new DevicesConnector(inputDevice, outputDevice);
         devicesConnector.Connect();
-        inputDevice.StartEventsListening()
+
+        inputDevice.StartEventsListening();
 
         InitializeComponent();
 
@@ -35,6 +38,12 @@ public partial class MainPage : ContentPage
     {
         var midiDevice = (MidiDevice)sender;
         Debug.WriteLine($"Event received from '{midiDevice.Name}' at {DateTime.Now}: {e.Event}");
+    }
+
+    public void OnEventSent(object sender, MidiEventSentEventArgs e)
+    {
+        var midiDevice = (MidiDevice)sender;
+        Debug.WriteLine($"Event sent to '{midiDevice.Name}' at {DateTime.Now}: {e.Event}");
     }
 }
 
